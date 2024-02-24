@@ -1,31 +1,39 @@
 import * as Dialog from '@radix-ui/react-dialog';
 
+
 import { X } from 'lucide-react';
 import { ChangeEvent, FormEvent, useState } from 'react';
-import {  toast } from 'sonner';
+import { toast } from 'sonner';
 
+interface NewNoteCardProps {
+   onNoteCreated: (content: string) => void
+}
 
-export function NewNoteCard() {
+export function NewNoteCard({ onNoteCreated }: NewNoteCardProps) {
 
    const [showLdshowOnboarding, setshowLdshowOnboarding] = useState(true);
-   const [content ,setContent] = useState('')
+   const [content, setContent] = useState('')
 
    function handleStasrEditor() {
       setshowLdshowOnboarding(false)
    }
 
    function handleContentChanged(event: ChangeEvent<HTMLTextAreaElement>) {
+      setContent(event.target.value)
       if (event.target.value === '') {
          setshowLdshowOnboarding(true)
       }
    }
 
-   function handleSaveNote( event: FormEvent){
-         event.preventDefault()
+   function handleSaveNote(event: FormEvent) {
+      event.preventDefault()
 
-         console.log(content)
+      onNoteCreated(content)
 
-         toast.success('Nota criada com sucesso')
+      setContent('')
+      setshowLdshowOnboarding(true)
+
+      toast.success('Nota criada com sucesso')
    }
 
    return (
@@ -49,31 +57,32 @@ export function NewNoteCard() {
                   <X className='size-5 ' />
                </Dialog.Close>
 
-               <form onSubmit={handleSaveNote} className='flex-1 flex flex-col '> 
+               <form onSubmit={handleSaveNote} className='flex-1 flex flex-col '>
 
-               <div className=' flex flex-1  flex-col gap-3 p-5'>
+                  <div className=' flex flex-1  flex-col gap-3 p-5'>
 
-                  <span className='text-sm font-medium text-slate-300'>
-                     Adicionar notas
-                  </span>
+                     <span className='text-sm font-medium text-slate-300'>
+                        Adicionar notas
+                     </span>
 
-                  {showLdshowOnboarding ? (
-                     <p className='text-sm leading-6 text-slate-400'>
-                        Comece <button className='font-medium text-lime-400 hover:underline '> gravando uma nota</button> em audio ou se preferir <button onClick={handleStasrEditor} className='font-medium text-lime-400 hover:underline'>utilize apenas texto.</button>
-                     </p>
-                  ) : (
-                     <textarea
-                        autoFocus
-                        className='text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none'
-                        onChange={handleContentChanged} />
-                  )}
-               </div>
+                     {showLdshowOnboarding ? (
+                        <p className='text-sm leading-6 text-slate-400'>
+                           Comece <button className='font-medium text-lime-400 hover:underline '> gravando uma nota</button> em audio ou se preferir <button onClick={handleStasrEditor} className='font-medium text-lime-400 hover:underline'>utilize apenas texto.</button>
+                        </p>
+                     ) : (
+                        <textarea
+                           autoFocus
+                           className='text-sm leading-6 text-slate-400 bg-transparent resize-none flex-1 outline-none'
+                           onChange={handleContentChanged}
+                           value={content} />
+                     )}
+                  </div>
 
-               <button
-                  type='submit'
-                  className=' w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500 '>
-                  salvar nota
-               </button>
+                  <button
+                     type='submit'
+                     className=' w-full bg-lime-400 py-4 text-center text-sm text-lime-950 outline-none font-medium hover:bg-lime-500 '>
+                     salvar nota
+                  </button>
                </form>
             </Dialog.Content>
          </Dialog.Portal>

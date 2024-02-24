@@ -15,16 +15,16 @@ export function NoteCard({ note }: NoteCardProps) {
     return (
         <Dialog.Root>
             <Dialog.Trigger className='rounded-md text-left flex flex-col bg-slate-600 p-5 gap-3 overflow-hidden relative outline-none
-         hover:border-2  hover:border-slate-600 focus:border-2  focus:border-lime-400'>
+         hover:border-2  hover:border-slate-600 focus:border-2  focus:border-lime-400 '>
                 <span className='text-sm font-medium text-slate-300'>
-                    {formatDistanceToNow(note.date)}
+                {formatDistanceToNow(note.date, { locale: ptBR, addSuffix: true })}
                 </span>
 
                 <p className='text-sm leading-6 text-slate-400'>
                     {note.content}
                 </p>
 
-                <div className=' absolute bottom-0 left-0 right-0 h-1/2  bg-gradient-to-t  from-black/68 to-black/0 pointer-events-none' />
+                <div className=' absolute bottom-0 left-0 right-0 h-1/2   bg-gradient-to-br from-indigo-400 via-amber-400 pointer-events-none' />
 
             </Dialog.Trigger>
 
